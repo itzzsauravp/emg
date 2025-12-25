@@ -1,9 +1,11 @@
 import { createFile, createFolder } from "./helpers/file.helpers";
 import { argParse, showHelp } from "./helpers/general.helpers";
 
-const help = argParse("-h");
-const fileToGenerate = argParse("-f");
-const moduleToGenerate = argParse("-g");
+const help = argParse("--help");
+const fileToGenerate = argParse("--file");
+const moduleToGenerate = argParse("--generate");
+
+console.log(help, fileToGenerate, moduleToGenerate);
 
 if (!fileToGenerate || help) {
     showHelp();
