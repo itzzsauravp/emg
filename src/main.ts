@@ -1,14 +1,19 @@
-import { generateFile } from "./helpers/file.helpers";
+import { createFile, createFolder } from "./helpers/file.helpers";
 import { argParse, showHelp } from "./helpers/general.helpers";
 
 const help = argParse("-h");
 const fileToGenerate = argParse("-f");
 const moduleToGenerate = argParse("-g");
 
-if (!fileToGenerate || !moduleToGenerate || help) {
-  showHelp();
+if (!fileToGenerate || help) {
+    showHelp();
 }
 
 if (fileToGenerate && moduleToGenerate) {
-  generateFile(fileToGenerate!, moduleToGenerate);
+    createFolder(moduleToGenerate);
+    createFile(fileToGenerate, moduleToGenerate)
+}
+
+if (!moduleToGenerate && fileToGenerate) {
+    createFile(fileToGenerate, moduleToGenerate)
 }

@@ -5,57 +5,57 @@ import { generateFileContent, resolveType } from "./general.helpers";
 
 const SRC_DIR = path.resolve(process.cwd(), "src");
 export function doesFolderExist(folderName: string): boolean {
-  const folderPath = path.join(SRC_DIR, folderName);
-  try {
-    return fs.statSync(folderPath).isDirectory();
-  } catch (err: any) {
-    if (err.code === "ENOENT") return false;
-    throw err;
-  }
+    const folderPath = path.join(SRC_DIR, folderName);
+    try {
+        return fs.statSync(folderPath).isDirectory();
+    } catch (err: any) {
+        if (err.code === "ENOENT") return false;
+        throw err;
+    }
 }
 
 export function doesFileExist(
-  fileName: string,
-  type: TModulestoGenerate | string,
+    fileName: string,
+    type: TModulestoGenerate | string,
 ): boolean {
-  const filePath = path.join(SRC_DIR, type, fileName);
-  try {
-    return fs.statSync(filePath).isFile();
-  } catch (err: any) {
-    if (err.code === "ENOENT") return false;
-    throw err;
-  }
+    const filePath = path.join(SRC_DIR, type, fileName);
+    try {
+        return fs.statSync(filePath).isFile();
+    } catch (err: any) {
+        if (err.code === "ENOENT") return false;
+        throw err;
+    }
 }
 
-export function createFolderIfNotExist(name: string): void {
-  const folderPath = path.join(SRC_DIR, name);
+export function createFolder(name: string): void {
+    const folderPath = path.join(SRC_DIR, name);
 
-  if (doesFolderExist(name)) {
-    console.log(`Folder already exists: ${folderPath} `);
-    return;
-  }
+    if (doesFolderExist(name)) {
+        console.log(`Folder already exists: ${folderPath} `);
+        return;
+    }
 
-  fs.mkdirSync(folderPath, { recursive: true });
-  console.log(`Created folder: ${folderPath} `);
+    fs.mkdirSync(folderPath, { recursive: true });
+    console.log(`Created folder: ${folderPath} `);
 }
 
-export function createFileIfNotExist(name: string, type: string): void {
-  const filePath = path.join(SRC_DIR, type, name);
+export function createFile(name: string, type?: string): void {
+    let filePath: string
+    if (type) {
+        filePath = path.join(SRC_DIR, type, name);
 
-  if (doesFileExist(name, type)) {
-    console.log(`File already exists: ${filePath} `);
-    return;
-  }
+        if (doesFileExist(name, type)) {
+            console.log(`File already exists: ${filePath} `);
+            return;
+        }
 
-  fs.mkdirSync(path.dirname(filePath), { recursive: true });
-  fs.writeFileSync(filePath, generateFileContent(type, name).trim(), {
-    flag: "wx",
-  });
+        fs.mkdirSync(path.dirname(filePath), { recursive: true });
+    } else {
+        filePath = path.join(SRC_DIR, name);
+    }
+    fs.writeFileSync(filePath, generateFileContent(type, name).trim(), {
+        flag: "wx",
+    });
 
-  console.log(`Created file: ${filePath} `);
-}
-
-export function generateFile(name: string, type: string): void {
-  createFolderIfNotExist(resolveType(type) as string);
-  createFileIfNotExist(name, resolveType(type) as string);
+    console.log(`Created file: ${filePath} `);
 }
