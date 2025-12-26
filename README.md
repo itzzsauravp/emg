@@ -5,6 +5,10 @@ clone it somewhere
 ```bash
 git clone https://github.com/itzzsauravp/emg
 ```
+install dependencies
+```bash
+npm install
+```
 
 build and generate binary
 
